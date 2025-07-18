@@ -48,26 +48,26 @@ function App() {
             </PrivateRoute>
 
             <Switch>
-              <PrivateRoute exact path="/:playingMode/category/"><Groups/></PrivateRoute>
-              <PrivateRoute exact path="/:playingMode/category/:category/"></PrivateRoute>
+              <Route exact path="/:playingMode/category/"><Groups/></Route>
+              <Route exact path="/:playingMode/category/:category/"></Route>
             </Switch>
 
             <Switch>
-              <PrivateRoute exact path="/:playingMode/category/:category/search/"><Search/></PrivateRoute>
-              <PrivateRoute exact path="/:playingMode/search/"><Search/></PrivateRoute>
+              <Route exact path="/:playingMode/category/:category/search/"><Search/></Route>
+              <Route exact path="/:playingMode/search/"><Search/></Route>
             </Switch>
             <Switch>
-              <PrivateRoute exact path="/live/category/:category/tvguide/"><EpgFullListing/></PrivateRoute>
-              <PrivateRoute exact path="/live/category/:category/tvguide/:date"><EpgFullListing/></PrivateRoute>
+              <Route exact path="/live/category/:category/tvguide/"><EpgFullListing/></Route>
+              <Route exact path="/live/category/:category/tvguide/:date"><EpgFullListing/></Route>
             </Switch>
 
             <Switch>
               <Route path="/login/"><Login url={url}/></Route>
-              <PrivateRoute exact path = "/info/"><AccountInfo/></PrivateRoute>
-              <PrivateRoute path = "/live/category/:category"><MainLive/></PrivateRoute>
-              <PrivateRoute path = "/live/"><MainLive/></PrivateRoute>
-              <PrivateRoute path = "/:playingMode/category/:category"><MainVod/></PrivateRoute>
-              <PrivateRoute path = "/:playingMode/"><MainVod/></PrivateRoute>
+              <Route exact path = "/"><MainMenu/></Route>
+              <Route path = "/live/category/:category"><MainLive/></Route>
+              <Route path = "/live/"><MainLive/></Route>
+              <Route path = "/:playingMode/category/:category"><MainVod/></Route>
+              <Route path = "/:playingMode/"><MainVod/></Route>
             </Switch>
           </Route>
         </Switch>
