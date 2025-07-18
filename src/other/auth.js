@@ -17,34 +17,31 @@ export const useAuth = () => {
 };
 
 export function useProvideAuth() {
-  const [auth, setAuth] = useState(1);
+  const [auth, setAuth] = useState(false);
 
   const signin = (dns, username, password, successFallback, failFallback) => {
-    return new Promise((resolve) => {
-      // Skip authentication - set dummy user info
-      setAuth(true);
-      setInfo({
-        username: 'demo',
-        password: 'demo',
-        exp_date: Date.now() + (365 * 24 * 60 * 60 * 1000), // 1 year from now
-        max_connections: '1',
-        message: 'Demo Mode - No Authentication Required'
-      }, {
-        server_protocol: 'http',
-        url: 'localhost',
-        port: '3006'
-      });
-      initDb();
-      resolve();
-      successFallback && (successFallback());
+    // Skip authentication - set dummy user info
+    setAuth(true);
+    setInfo({
+      username: 'demo',
+      password: 'demo',
+      exp_date: Date.now() + (365 * 24 * 60 * 60 * 1000), // 1 year from now
+      max_connections: '1',
+      message: 'Demo Mode - No Authentication Required'
+    }, {
+      server_protocol: 'http',
+      url: 'localhost',
+      port: '3006'
     });
+    initDb();
+    successFallback && (successFallback());
   };
 
   const authLogin = (fallback) =>{
-    // Auto-login in demo mode - only if not already authenticated
-    if (!isAuth()) {
+    // Auto-login in demo mode
+    if (auth === false) {
       signin('', 'demo', 'demo', fallback);
-    } else if (fallback) {
+    } else if (fallback && auth === true) {
       fallback();
     }
   }
