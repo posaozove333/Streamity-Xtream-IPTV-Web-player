@@ -24,8 +24,18 @@ import {setTimer5} from "./actions/timer5"
 
 function App() {
   const dispatch = useDispatch()
-  setInterval(() => dispatch(setTimer60()), 50000);
-  setInterval(() => dispatch(setTimer5()), 5000);
+  
+  // Only set up timers once
+  React.useEffect(() => {
+    const timer60 = setInterval(() => dispatch(setTimer60()), 50000);
+    const timer5 = setInterval(() => dispatch(setTimer5()), 5000);
+    
+    return () => {
+      clearInterval(timer60);
+      clearInterval(timer5);
+    };
+  }, [dispatch]);
+
 
   if(window.location.protocol !== 'https:' && window.https===true)
     window.location = window.location.href.replace("http","https");

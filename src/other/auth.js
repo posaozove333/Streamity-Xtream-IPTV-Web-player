@@ -20,35 +20,42 @@ export function useProvideAuth() {
   const [auth, setAuth] = useState(1);
 
   const signin = (dns, username, password, successFallback, failFallback) => {
-    // Skip authentication - set dummy user info
-    setAuth(1);
-    setInfo({
-      username: 'demo',
-      password: 'demo',
-      exp_date: Date.now() + (365 * 24 * 60 * 60 * 1000), // 1 year from now
-      max_connections: '1',
-      message: 'Demo Mode - No Authentication Required'
-    }, {
-      server_protocol: 'http',
-      url: 'localhost',
-      port: '3006'
+    return new Promise((resolve) => {
+      // Skip authentication - set dummy user info
+      setAuth(true);
+      setInfo({
+        username: 'demo',
+        password: 'demo',
+        exp_date: Date.now() + (365 * 24 * 60 * 60 * 1000), // 1 year from now
+        max_connections: '1',
+        message: 'Demo Mode - No Authentication Required'
+      }, {
+        server_protocol: 'http',
+        url: 'localhost',
+        port: '3006'
+      });
+      initDb();
+      resolve();
+      successFallback && (successFallback());
     });
-    initDb();
-    successFallback && (successFallback());
   };
 
   const authLogin = (fallback) =>{
-    // Auto-login in demo mode
-    signin('', 'demo', 'demo', fallback);
+    // Auto-login in demo mode - only if not already authenticated
+    if (!isAuth()) {
+      signin('', 'demo', 'demo', fallback);
+    } else if (fallback) {
+      fallback();
+    }
   }
 
   const signout = (action) => {
-    setAuth(null);
+    setAuth(false);
     action && (action());
   };
 
   const isAuth = () => {
-    return true; // Always authenticated in demo mode
+    return auth === true;
   }
 
   return {
