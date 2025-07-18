@@ -10,7 +10,7 @@ export async function loadGroup(mode) {
         username: getInfo().username,
         password: getInfo().password,
         action: getAddress(mode, true)
-    }).then(res => res.data).catch(err => [])
+    }).then(res => Array.isArray(res.data) ? res.data : []).catch(err => [])
 }
 
 export async function loadPlaylist(mode, group) {
